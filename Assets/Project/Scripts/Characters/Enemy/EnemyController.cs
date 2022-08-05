@@ -2,46 +2,44 @@
 using UnityEngine.AI;
 
 [SelectionBase]
-[RequireComponent(typeof(NavMeshAgent))]
 public class EnemyController : MonoBehaviour
 {
-    private NavMeshAgent _agent;
-    private Transform _target;
-
-    private bool _isFollowing;
-
-    private bool HasTarget => _target != null;
+    [SerializeField] private Animator _animator;
+    [SerializeField] private NavMeshAgent _agent;
+    
+    private EnemyStateMachine _stateMachine;
+    private EnemyMovementContext _movementContext;
+    private EnemyAnimationContext _animationContext;
 
     private void Awake()
     {
+        _movementContext = new EnemyMovementContext(_agent);
+        _animationContext = new EnemyAnimationContext(_animator);
+        _stateMachine = new EnemyStateMachine(_movementContext, _animationContext);
+        _stateMachine.SwitchState(EnemyState.Idle);
+
         _agent = GetComponent<NavMeshAgent>();
         _agent.enabled = false;
     }
 
     private void Update()
     {
-        if (HasTarget && _isFollowing)
-        {
-            _agent.SetDestination(_target.position);
-        }
+        _stateMachine.Update();
+        _movementContext.Update();
     }
 
     public void SetFollowTarget(Transform target)
     {
-        _target = target;
+        _movementContext.SetFollowTarget(target);
     }
 
     public void StartFollowing()
     {
-        Debug.Log($"{nameof(EnemyController)}.{nameof(StartFollowing)}");
-        _agent.enabled = true;
-        _isFollowing = true;
+        _stateMachine.SwitchState(EnemyState.Follow);
     }
 
     public void StopFollowing()
     {
-        Debug.Log($"{nameof(EnemyController)}.{nameof(StopFollowing)}");
-        _agent.enabled = false;
-        _isFollowing = false;
+        _stateMachine.SwitchState(EnemyState.Idle);
     }
 }

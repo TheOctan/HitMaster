@@ -1,7 +1,9 @@
 ﻿public class DieState : BaseState<EnemyState>
 {
-    public DieState(BaseStateMachine<EnemyState> stateMachine)
-        : base(stateMachine)
+    public DieState(BaseStateMachine<EnemyState> stateMachine,
+        EnemyMovementContext movementContext,
+        EnemyAnimationContext animationContext)
+        : base(stateMachine, movementContext, animationContext)
     {
     }
 

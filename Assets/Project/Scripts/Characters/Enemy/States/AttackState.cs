@@ -5,16 +5,15 @@ using UnityEngine;
     public class AttackState : BaseState<EnemyState>
     {
         public AttackState(BaseStateMachine<EnemyState> stateMachine,
-            PlayerMovementContext movementContext,
+            EnemyMovementContext movementContext,
             EnemyAnimationContext animationContext)
-            : base(stateMachine/*, movementContext, animationContext*/)
+            : base(stateMachine, movementContext, animationContext)
         {
         }
 
         public override void EnterState()
         {
-            // AnimationContext.IsAttack = true;
-            // AnimationContext.AnimatedTool.gameObject.SetActive(true);
+            AnimationContext.IsAttack = true;
         }
 
         public override void UpdateState()
@@ -28,7 +27,6 @@ using UnityEngine;
 
         public override void ExitState()
         {
-            // AnimationContext.AnimatedTool.gameObject.SetActive(false);
         }
 
         private async void ExitFromStateByDelayAsync(float delay)

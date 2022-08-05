@@ -10,7 +10,7 @@ public class PlatformGroupManager : MonoBehaviour
     [Header("Groups")]
     [SerializeField] private List<PlatformGroup> _platformGroups;
 
-    private void OnEnable()
+    private void Start()
     {
         AssignPlatformGroups((triggerListener, enemy) =>
         {
@@ -20,7 +20,7 @@ public class PlatformGroupManager : MonoBehaviour
         });
     }
 
-    private void OnDisable()
+    private void OnDestroy()
     {
         AssignPlatformGroups((triggerListener, enemy) =>
         {

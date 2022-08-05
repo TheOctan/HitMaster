@@ -4,8 +4,15 @@ using System.Collections.Generic;
 public abstract class BaseStateMachine<T> where T : Enum
 {
     protected abstract BaseStateFactory<T> StateFactory { get; }
+    protected abstract T InitialStateType { get; }
+
     private BaseState<T> _currentState;
     private T _currentStateType;
+
+    protected BaseStateMachine()
+    {
+        _currentStateType = InitialStateType;
+    }
 
     public void SwitchState(T state)
     {

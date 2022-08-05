@@ -4,24 +4,31 @@ public enum EnemyState
 {
     None = -1,
     Idle,
-    Walk,
-    Attack
+    Follow,
+    Attack,
+    Die
 }
 
 public class EnemyStateFactory : BaseStateFactory<EnemyState>
 {
-    public EnemyStateFactory(BaseStateMachine<EnemyState> baseStateMachine/*,
-        PlayerMovementContext movementContext,
-        EnemyAnimationContext animationContext*/)
+    private readonly EnemyMovementContext _movementContext;
+    private readonly EnemyAnimationContext _animationContext;
+
+    public EnemyStateFactory(BaseStateMachine<EnemyState> baseStateMachine,
+        EnemyMovementContext movementContext,
+        EnemyAnimationContext animationContext)
         : base(baseStateMachine)
     {
-        
+        _animationContext = animationContext;
+        _movementContext = movementContext;
     }
 
-    protected override void RegisterStates(Dictionary<EnemyState, BaseState<EnemyState>> states)
+    protected override void RegisterStates(Dictionary<EnemyState, BaseState<EnemyState>> states,
+        BaseStateMachine<EnemyState> stateMachine)
     {
-        // states.Add(PlayerState.Idle, new IdleState(stateMachine, movementContext, animationContext));
-        // states.Add(PlayerState.Walk, new WalkState(stateMachine, movementContext, animationContext));
-        // states.Add(PlayerState.Attack, new AttackState(stateMachine, movementContext, animationContext));
+        states.Add(EnemyState.Idle, new IdleState(stateMachine, _movementContext, _animationContext));
+        states.Add(EnemyState.Follow, new FollowState(stateMachine, _movementContext, _animationContext));
+        states.Add(EnemyState.Attack, new AttackState(stateMachine, _movementContext, _animationContext));
+        states.Add(EnemyState.Die, new DieState(stateMachine, _movementContext, _animationContext));
     }
 }

@@ -15,10 +15,11 @@ public abstract class BaseStateFactory<T> where T : Enum
 
     public void RegisterStates()
     {
-        RegisterStates(_states);
+        RegisterStates(_states, _baseStateMachine);
     }
 
-    protected abstract void RegisterStates(Dictionary<T, BaseState<T>> states);
+    protected abstract void RegisterStates(Dictionary<T, BaseState<T>> states,
+        BaseStateMachine<T> stateMachine);
 
     public BaseState<T> GetState(T state)
     {
