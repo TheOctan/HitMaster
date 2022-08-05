@@ -9,6 +9,7 @@ public class PlayerTriggerListener : MonoBehaviour, IPlayerTriggerListener
     {
         if (other.TryGetComponent(out PlayerController _))
         {
+            Debug.Log($"{nameof(PlayerTriggerListener)}.{nameof(OnTriggerEnter)}");
             OnPlayerEnter?.Invoke();
         }
     }
@@ -17,6 +18,7 @@ public class PlayerTriggerListener : MonoBehaviour, IPlayerTriggerListener
     {
         if (other.TryGetComponent(out PlayerController _))
         {
+            Debug.Log($"{nameof(PlayerTriggerListener)}.{nameof(OnTriggerExit)}");
             OnPlayerExit?.Invoke();
         }
     }
