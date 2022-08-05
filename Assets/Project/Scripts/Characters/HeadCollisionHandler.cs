@@ -1,18 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
-public class HeadCollisionHandler : MonoBehaviour
+public class HeadCollisionHandler : MonoBehaviour, IHeadCollisionHandler
 {
-    // Start is called before the first frame update
-    void Start()
+    public event Action OnHeadShot;
+    public void HeadShot()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        OnHeadShot?.Invoke();
     }
 }

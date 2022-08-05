@@ -15,9 +15,9 @@ public class MovmentController : MonoBehaviour
 
     private void Start()
     {
-        if (!ReferenceEquals(_target, null))
+        if (_target != null)
         {
-            //_agent.SetDestination(_target.position);
+            _agent.SetDestination(_target.position);
         }
     }
 }
