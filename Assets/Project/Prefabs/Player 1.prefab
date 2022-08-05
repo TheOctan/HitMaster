@@ -100,6 +100,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e77c0dc518e7454a80cbfc2e9a4edaba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _camera: {fileID: 7403896322700287668}
+  _knifeHolder: {fileID: 1835858071166092200}
+  _focusDistance: 3
 --- !u!114 &2775371695250650272
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -125,7 +128,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 387aa30622f74349bac8fdd37c4d2ed9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _knifePrefab: {fileID: 2744669527116281449, guid: 9ca43c631639e1e4098e1ccd1412ff18,
+  _knifePrefab: {fileID: 3480475821133471966, guid: c61b8c0a45976554d86d5efe5e6296cf,
     type: 3}
   _knifeHolder: {fileID: 1835858071166092200}
 --- !u!136 &7403896321703188323
@@ -247,16 +250,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: Main Camera
       objectReference: {fileID: 0}
-    - target: {fileID: 4453010552856913580, guid: c468d596b1594db468961d9bd6ca2f4f,
+    - target: {fileID: 4453010553302700561, guid: c468d596b1594db468961d9bd6ca2f4f,
         type: 3}
-      propertyPath: m_Layer
-      value: 7
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c468d596b1594db468961d9bd6ca2f4f, type: 3}
 --- !u!4 &7403896322700287667 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4453010552856913577, guid: c468d596b1594db468961d9bd6ca2f4f,
+    type: 3}
+  m_PrefabInstance: {fileID: 6589797576957311002}
+  m_PrefabAsset: {fileID: 0}
+--- !u!20 &7403896322700287668 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 4453010552856913582, guid: c468d596b1594db468961d9bd6ca2f4f,
     type: 3}
   m_PrefabInstance: {fileID: 6589797576957311002}
   m_PrefabAsset: {fileID: 0}
