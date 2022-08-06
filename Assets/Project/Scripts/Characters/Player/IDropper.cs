@@ -2,5 +2,5 @@
 
 public interface IDropper
 {
-    void DropItemToDirection(Ray ray);
+    void DropItemTo(Vector3 point);
 }

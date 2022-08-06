@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class KnifeDropper : MonoBehaviour, IDropper
@@ -7,33 +6,34 @@ public class KnifeDropper : MonoBehaviour, IDropper
     [SerializeField] private Knife _knifePrefab;
     [SerializeField] private Transform _knifeHolder;
 
-    private ObjectPool<Knife> _objectPool;
-    private List<Ray> _rays = new List<Ray>();
+    // private ObjectPool<Knife> _objectPool;
+    private readonly List<Line> _lines = new List<Line>();
 
     private void Awake()
     {
-        _objectPool = new ObjectPool<Knife>(_knifePrefab, 15);
+        // _objectPool = new ObjectPool<Knife>(_knifePrefab, 15);
     }
 
-    public void DropItemToDirection(Ray ray)
+    public void DropItemTo(Vector3 point)
     {
-        _rays.Add(ray);
-        // Knife knife = _objectPool.Pull(_knifeHolder.position, _knifeHolder.rotation);
-        // knife.SetDirection(direction);
-        // knife.StartMove();
+        Vector3 position = _knifeHolder.position;
+        _lines.Add(new Line(position, point));
+
+        // TODO: optimize by object pool
+        Knife knife =
+            Object.Instantiate(_knifePrefab, _knifeHolder.position, _knifeHolder.rotation);
+        //_objectPool.Pull(_knifeHolder.position, _knifeHolder.rotation);
+
+        Vector3 direction = (point - position).normalized;
+        knife.SetDirection(direction);
+        knife.StartMove();
     }
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.green;
-
-        Vector3 position = _knifeHolder.position;
-        
-        foreach (Ray ray in _rays)
+        foreach (Line line in _lines)
         {
-            Vector3 delta = ray.origin - position;
-            Vector3 direction = ray.direction + delta;
-            Gizmos.DrawRay(position, direction * 10f);
+            Debug.DrawLine(line.startPoint, line.endPoint, Color.green);
         }
     }
 }

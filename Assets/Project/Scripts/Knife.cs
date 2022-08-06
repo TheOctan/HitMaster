@@ -11,8 +11,8 @@ public class Knife : MonoBehaviour, IPoolable<Knife>
     [SerializeField, Min(0.1f)] private float _rotationSpeed = 2f;
     [SerializeField, Min(0.1f)] private float _disableDelay = 2f;
 
-    private Rigidbody _rigidbody;
     private Action<Knife> _returnToPool;
+    private Rigidbody _rigidbody;
     private Vector3 _direction;
 
     // private readonly CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
@@ -45,6 +45,7 @@ public class Knife : MonoBehaviour, IPoolable<Knife>
         UpdateRotation();
     }
 
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.TryGetComponent(out IHeadCollisionHandler headCollisionHandler))
@@ -74,7 +75,7 @@ public class Knife : MonoBehaviour, IPoolable<Knife>
     {
         enabled = true;
         //_cancellationToken = _cancellationTokenSource.Token;
-        DisableByDelayAsync();
+        // DisableByDelayAsync();
     }
 
     public void ReturnToPool()
@@ -98,6 +99,11 @@ public class Knife : MonoBehaviour, IPoolable<Knife>
 
     private void UpdateRotation()
     {
+        if (_direction == Vector3.zero)
+        {
+            return;
+        }
+
         Quaternion targetRotation = Quaternion.LookRotation(_direction);
         float turnStep = _rotationSpeed * Time.deltaTime;
 
