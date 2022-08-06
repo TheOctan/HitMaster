@@ -20,16 +20,6 @@ public class PlatformGroupManager : MonoBehaviour
         });
     }
 
-    private void OnDestroy()
-    {
-        AssignPlatformGroups((triggerListener, enemy) =>
-        {
-            enemy.SetFollowTarget(null);
-            triggerListener.OnPlayerEnter -= enemy.StartFollowing;
-            triggerListener.OnPlayerExit -= enemy.StopFollowing;
-        });
-    }
-
     private void AssignPlatformGroups(Action<IPlayerTriggerListener, EnemyController> callback)
     {
         foreach (PlatformGroup group in _platformGroups)

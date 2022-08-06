@@ -1,4 +1,6 @@
-﻿public class FollowState : BaseState<EnemyState>
+﻿using UnityEngine;
+
+public class FollowState : BaseState<EnemyState>
 {
     public FollowState(BaseStateMachine<EnemyState> stateMachine,
         EnemyMovementContext movementContext,
@@ -16,6 +18,12 @@
     public override void UpdateState()
     {
         AnimationContext.WalkingSpeed = MovementContext.CurrentSpeed;
+
+        float attackDistance = MovementContext.MinDistance;
+        if (MovementContext.SqrDistanceToTarget < attackDistance * attackDistance)
+        {
+            SwitchState(EnemyState.Attack);
+        }
     }
 
     public override void ExitState()

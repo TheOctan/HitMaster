@@ -18,6 +18,8 @@ public class EnemyMovementContext : IDisposable
 
     private readonly CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
 
+    public float SqrDistanceToTarget => (_target.position - _transform.position).sqrMagnitude;
+    public float MinDistance => _collisionRadius + _targetCollisionRadius + _attackDistance;
     private bool HasTarget => _target != null;
     public float CurrentSpeed => _agent.velocity.magnitude;
 
@@ -64,7 +66,7 @@ public class EnemyMovementContext : IDisposable
             }
 
             Vector3 direction = (_target.position - _transform.position).normalized;
-            float distance = _collisionRadius + _targetCollisionRadius + _attackDistance;
+            float distance = _collisionRadius + _targetCollisionRadius + _attackDistance / 2;
             Vector3 targetPosition = _target.position - direction * distance;
             _agent.SetDestination(targetPosition);
         }
