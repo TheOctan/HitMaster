@@ -7,11 +7,13 @@ public class HealthController : MonoBehaviour, IHealthController
     public event Action<int> OnDamaged;
 
     [SerializeField] private HeadCollisionHandler _headCollisionHandler;
+    [SerializeField] private Renderer _renderer;
     [SerializeField] private ParticleSystem _hitEffect;
 
     [Header("Properties")]
     [SerializeField, Min(1)] private int _maxHealth = 2;
     [SerializeField, Min(0)] private int _startHealth = 2;
+    [SerializeField] private Color _dieColor;
 
     public int MaxHealth => _maxHealth;
     public int CurrentHealth { get; private set; }
@@ -45,8 +47,15 @@ public class HealthController : MonoBehaviour, IHealthController
         if (CurrentHealth <= 0)
         {
             CurrentHealth = 0;
-            OnDie?.Invoke(direction);
+            
+            Die(direction);
         }
+    }
+
+    private void Die(Vector3 direction)
+    {
+        _renderer.material.color = _dieColor;
+        OnDie?.Invoke(direction);
     }
 
     private void HitEffect(Vector3 direction)
