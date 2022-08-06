@@ -927,7 +927,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9e1f5d8ec64c2d9a380683578a8bea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _target: {fileID: 1170646178}
+  _target: {fileID: 640619128}
   _platformGroups:
   - _platform: {fileID: 447172573}
     _enemies:
@@ -1178,12 +1178,6 @@ MonoBehaviour:
   flattenMode: 0
   flattenSpace: 0
   destroyAfterFlatten: 1
---- !u!4 &1170646178 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 891345782425189009, guid: deb0d0ecc8612574381e4e252f071589,
-    type: 3}
-  m_PrefabInstance: {fileID: 891345783418805811}
-  m_PrefabAsset: {fileID: 0}
 --- !u!224 &1579123839 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6316006918352009486, guid: 2e2b8b9faec0f214a921ca31fe133b7d,
@@ -1766,6 +1760,11 @@ PrefabInstance:
       propertyPath: _target
       value: 
       objectReference: {fileID: 492671159}
+    - target: {fileID: 891345782980430926, guid: deb0d0ecc8612574381e4e252f071589,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: deb0d0ecc8612574381e4e252f071589, type: 3}
 --- !u!1001 &1334400700140266165

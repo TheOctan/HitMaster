@@ -24,7 +24,7 @@ public class PlatformGroupManager : MonoBehaviour
     {
         AssignPlatformGroups((triggerListener, enemy) =>
         {
-            enemy.SetFollowTarget(_target);
+            enemy.SetFollowTarget(null);
             triggerListener.OnPlayerEnter -= enemy.StartFollowing;
             triggerListener.OnPlayerExit -= enemy.StopFollowing;
         });

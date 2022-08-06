@@ -9,7 +9,6 @@ public class PlayerTriggerListener : MonoBehaviour, IPlayerTriggerListener
     {
         if (other.TryGetComponent(out IPlayer _))
         {
-            Debug.Log(nameof(TryGetComponent));
             OnPlayerEnter?.Invoke();
         }
     }
