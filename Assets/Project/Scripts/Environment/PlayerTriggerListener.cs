@@ -7,7 +7,7 @@ public class PlayerTriggerListener : MonoBehaviour, IPlayerTriggerListener
     public event Action OnPlayerExit;
     private void OnTriggerEnter(Collider other)
     {
-        if (other.TryGetComponent(out PlayerController _))
+        if (other.TryGetComponent(out IPlayer _))
         {
             OnPlayerEnter?.Invoke();
         }

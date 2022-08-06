@@ -3,9 +3,12 @@ using UnityEngine;
 
 public class HeadCollisionHandler : MonoBehaviour, IHeadCollisionHandler
 {
-    public event Action OnHeadShot;
-    public void HeadShot()
+    [SerializeField] private Collider _collider;
+
+    public event Action<Vector3> OnHeadShot;
+    public void HeadShot(Vector3 direction)
     {
-        OnHeadShot?.Invoke();
+        _collider.enabled = false;
+        OnHeadShot?.Invoke(direction);
     }
 }

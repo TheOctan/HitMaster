@@ -56,11 +56,11 @@ public class Knife : MonoBehaviour, IPoolable<Knife>
     {
         if (other.TryGetComponent(out IHeadCollisionHandler headCollisionHandler))
         {
-            headCollisionHandler.HeadShot();
+            headCollisionHandler.HeadShot(_direction);
         }
         else if (other.TryGetComponent(out IHealthController healthController))
         {
-            healthController.TakeDamage(1);
+            healthController.TakeDamage(_direction,1);
         }
 
         ReturnToPool();

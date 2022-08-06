@@ -1,10 +1,11 @@
 ﻿using System;
+using UnityEngine;
 
 public interface IHealthController
 {
-    event Action OnDie;
+    event Action<Vector3> OnDie;
     event Action<int> OnDamaged;
     int MaxHealth { get; }
     int CurrentHealth { get; }
-    void TakeDamage(int damage);
+    void TakeDamage(Vector3 direction, int damage);
 }

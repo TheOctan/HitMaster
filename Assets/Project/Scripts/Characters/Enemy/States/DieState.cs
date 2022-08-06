@@ -9,6 +9,8 @@
 
     public override void EnterState()
     {
+        AnimationContext.PushToBody();
+        MovementContext.Stop();
     }
 
     public override void UpdateState()
