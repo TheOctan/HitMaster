@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 public class KnifeDropper : MonoBehaviour, IDropper
 {
@@ -7,17 +9,22 @@ public class KnifeDropper : MonoBehaviour, IDropper
     [SerializeField] private Transform _knifeHolder;
 
     // private ObjectPool<Knife> _objectPool;
-    private readonly List<Line> _lines = new List<Line>();
+    private Line _debugLine;
 
     private void Awake()
     {
         // _objectPool = new ObjectPool<Knife>(_knifePrefab, 15);
     }
 
+    private void Update()
+    {
+        Debug.DrawLine(_debugLine.startPoint, _debugLine.endPoint, Color.green);
+    }
+
     public void DropItemTo(Vector3 point)
     {
         Vector3 position = _knifeHolder.position;
-        _lines.Add(new Line(position, point));
+        _debugLine = new Line(position, point);
 
         // TODO: optimize by object pool
         Knife knife =
@@ -27,13 +34,5 @@ public class KnifeDropper : MonoBehaviour, IDropper
         Vector3 direction = (point - position).normalized;
         knife.SetDirection(direction);
         knife.StartMove();
-    }
-
-    private void OnDrawGizmos()
-    {
-        foreach (Line line in _lines)
-        {
-            Debug.DrawLine(line.startPoint, line.endPoint, Color.green);
-        }
     }
 }

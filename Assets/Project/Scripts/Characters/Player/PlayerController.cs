@@ -1,17 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-
-public struct Line
-{
-    public Vector3 startPoint;
-    public Vector3 endPoint;
-    public Line(Vector3 startPoint, Vector3 endPoint)
-    {
-        this.startPoint = startPoint;
-        this.endPoint = endPoint;
-    }
-}
 
 [SelectionBase]
 public class PlayerController : MonoBehaviour, IPlayer
@@ -22,7 +12,7 @@ public class PlayerController : MonoBehaviour, IPlayer
     [SerializeField] private float _raycastDistance = 3f;
     [SerializeField] private LayerMask _layerMask;
 
-    private readonly List<Line> _debugLines = new List<Line>();
+    private Line _debugLine;
     private InputMaster _inputMaster;
     private IDropper _dropper;
 
@@ -48,12 +38,9 @@ public class PlayerController : MonoBehaviour, IPlayer
         _inputMaster.Player.TouchPress.started -= OnTouchPressed;
     }
 
-    private void OnDrawGizmos()
+    private void Update()
     {
-        foreach (Line line in _debugLines)
-        {
-            Debug.DrawLine(line.startPoint, line.endPoint, Color.red);
-        }
+        Debug.DrawLine(_debugLine.startPoint, _debugLine.endPoint, Color.red);
     }
 
     private void OnDrawGizmosSelected() 
@@ -85,7 +72,7 @@ public class PlayerController : MonoBehaviour, IPlayer
                 : ray.origin + ray.direction * _raycastDistance;
 
         Vector3 position = _camera.transform.position;
-        _debugLines.Add(new Line(position, raycastPoint));
+        _debugLine = new Line(position, raycastPoint);
         _dropper?.DropItemTo(raycastPoint);
     }
 }
