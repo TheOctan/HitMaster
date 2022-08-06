@@ -3,9 +3,9 @@ using UnityEngine;
 
 public class HeadCollisionHandler : MonoBehaviour, IHeadCollisionHandler
 {
-    public event Action OnHeadShot;
-    public void HeadShot()
+    public event Action<Vector3> OnHeadShot;
+    public void HeadShot(Vector3 direction)
     {
-        OnHeadShot?.Invoke();
+        OnHeadShot?.Invoke(direction);
     }
 }

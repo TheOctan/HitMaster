@@ -3,14 +3,12 @@ using UnityEngine;
 
 public class HealthController : MonoBehaviour, IHealthController
 {
-    public event Action OnDie;
+    public event Action<Vector3> OnDie;
     public event Action<int> OnDamaged;
 
     [SerializeField] private HeadCollisionHandler _headCollisionHandler;
-
-    [Header("Properties")] [SerializeField, Min(1)]
-    private int _maxHealth = 2;
-
+    [Header("Properties")]
+    [SerializeField, Min(1)] private int _maxHealth = 2;
     [SerializeField, Min(0)] private int _startHealth = 2;
 
     public int MaxHealth => _maxHealth;
@@ -27,9 +25,15 @@ public class HealthController : MonoBehaviour, IHealthController
     private void Awake()
     {
         CurrentHealth = _startHealth;
+        _headCollisionHandler.OnHeadShot += OnHeadShotHandler;
     }
 
-    public void TakeDamage(int damage)
+    private void OnHeadShotHandler(Vector3 direction)
+    {
+        TakeDamage(direction, _maxHealth);
+    }
+
+    public void TakeDamage(Vector3 direction,  int damage)
     {
         CurrentHealth -= damage;
         OnDamaged?.Invoke(damage);
@@ -37,7 +41,7 @@ public class HealthController : MonoBehaviour, IHealthController
         if (CurrentHealth <= 0)
         {
             CurrentHealth = 0;
-            OnDie?.Invoke();
+            OnDie?.Invoke(direction);
         }
     }
 }

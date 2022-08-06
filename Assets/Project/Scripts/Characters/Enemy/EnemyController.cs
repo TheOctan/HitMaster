@@ -5,8 +5,9 @@ using UnityEngine.AI;
 public class EnemyController : MonoBehaviour
 {
     [SerializeField] private Animator _animator;
+    [SerializeField] private RagdollControl _ragdollControl;
     [SerializeField] private NavMeshAgent _agent;
-    
+
     private EnemyStateMachine _stateMachine;
     private EnemyMovementContext _movementContext;
     private EnemyAnimationContext _animationContext;
@@ -14,12 +15,22 @@ public class EnemyController : MonoBehaviour
     private void Awake()
     {
         _movementContext = new EnemyMovementContext(_agent);
-        _animationContext = new EnemyAnimationContext(_animator);
+        _animationContext = new EnemyAnimationContext(_animator, _ragdollControl);
         _stateMachine = new EnemyStateMachine(_movementContext, _animationContext);
         _stateMachine.SwitchState(EnemyState.Idle);
 
-        _agent = GetComponent<NavMeshAgent>();
         _agent.enabled = false;
+
+        if (TryGetComponent(out IHealthController healthController))
+        {
+            healthController.OnDie += OnDieHandler;
+        }
+    }
+
+    private void OnDieHandler(Vector3 pushDirection)
+    {
+        _animationContext.PushDirection = pushDirection;
+        _stateMachine.SwitchState(EnemyState.Die);
     }
 
     private void Update()
