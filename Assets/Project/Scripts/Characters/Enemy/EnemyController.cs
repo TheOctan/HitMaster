@@ -46,6 +46,7 @@ public class EnemyController : MonoBehaviour
 
     public void StartFollowing()
     {
+        Debug.Log(nameof(StartFollowing));
         _stateMachine.SwitchState(EnemyState.Follow);
     }
 
