@@ -5,8 +5,8 @@ using UnityEngine.AI;
 public class EnemyController : MonoBehaviour
 {
     [SerializeField] private Animator _animator;
-    [SerializeField] private RagdollControl _ragdollControl;
     [SerializeField] private NavMeshAgent _agent;
+    [SerializeField] private RagdollControl _ragdollControl;
 
     private EnemyStateMachine _stateMachine;
     private EnemyMovementContext _movementContext;

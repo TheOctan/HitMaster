@@ -7,6 +7,8 @@ public class HealthController : MonoBehaviour, IHealthController
     public event Action<int> OnDamaged;
 
     [SerializeField] private HeadCollisionHandler _headCollisionHandler;
+    [SerializeField] private ParticleSystem _hitEffect;
+
     [Header("Properties")]
     [SerializeField, Min(1)] private int _maxHealth = 2;
     [SerializeField, Min(0)] private int _startHealth = 2;
@@ -38,10 +40,18 @@ public class HealthController : MonoBehaviour, IHealthController
         CurrentHealth -= damage;
         OnDamaged?.Invoke(damage);
 
+        HitEffect(direction);
+
         if (CurrentHealth <= 0)
         {
             CurrentHealth = 0;
             OnDie?.Invoke(direction);
         }
+    }
+
+    private void HitEffect(Vector3 direction)
+    {
+        _hitEffect.transform.rotation = Quaternion.FromToRotation(Vector3.forward, direction);
+        _hitEffect.Play();
     }
 }
