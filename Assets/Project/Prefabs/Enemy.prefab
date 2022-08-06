@@ -1324,6 +1324,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _headCollisionHandler: {fileID: 7747440979613424259}
   _renderer: {fileID: 9157468028064843400}
+  _collider: {fileID: 4912011636882995306}
   _hitEffect: {fileID: 8645786881255208516}
   _maxHealth: 2
   _startHealth: 2
@@ -2036,8 +2037,8 @@ GameObject:
   m_Component:
   - component: {fileID: 9096469259034879939}
   - component: {fileID: 7747440979613424259}
-  - component: {fileID: 3641718026721832851}
   - component: {fileID: 8260357663211402257}
+  - component: {fileID: 3641718026721832851}
   - component: {fileID: 2395785021591836195}
   - component: {fileID: 7585793155660396015}
   m_Layer: 6
@@ -2076,19 +2077,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85e31aa20ec316a45ae8522071ddcdca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!135 &3641718026721832851
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5232149839264862671}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.12
-  m_Center: {x: 0, y: 0.09380399, z: 0}
+  _collider: {fileID: 8260357663211402257}
 --- !u!135 &8260357663211402257
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -2102,6 +2091,19 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.16
   m_Center: {x: 0, y: 0.08, z: 0.01}
+--- !u!135 &3641718026721832851
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5232149839264862671}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.12
+  m_Center: {x: 0, y: 0.09380399, z: 0}
 --- !u!54 &2395785021591836195
 Rigidbody:
   m_ObjectHideFlags: 0

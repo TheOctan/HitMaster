@@ -7,6 +7,7 @@ public class HealthController : MonoBehaviour, IHealthController
     public event Action<int> OnDamaged;
 
     [SerializeField] private HeadCollisionHandler _headCollisionHandler;
+    [SerializeField] private Collider _collider;
     [SerializeField] private Renderer _renderer;
     [SerializeField] private ParticleSystem _hitEffect;
 
@@ -55,6 +56,7 @@ public class HealthController : MonoBehaviour, IHealthController
     private void Die(Vector3 direction)
     {
         _renderer.material.color = _dieColor;
+        _collider.enabled = false;
         OnDie?.Invoke(direction);
     }
 
