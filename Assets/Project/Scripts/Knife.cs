@@ -15,21 +15,21 @@ public class Knife : MonoBehaviour, IPoolable<Knife>
     private Rigidbody _rigidbody;
     private Vector3 _direction;
 
-    // private readonly CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
-    // private CancellationToken _cancellationToken;
+    private readonly CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
 
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody>();
     }
 
-    private async void DisableByDelayAsync()
+    private async void DisableByDelayAsync(CancellationToken token)
     {
         await Task.Delay((int)(1000 * _disableDelay));
-        // if (_cancellationToken.IsCancellationRequested)
-        // {
-        //     return;
-        // }
+        if (token.IsCancellationRequested)
+        {
+            Debug.Log($"Task {nameof(DisableByDelayAsync)} was canceled");
+            return;
+        }
         ReturnToPool();
     }
 
@@ -37,6 +37,12 @@ public class Knife : MonoBehaviour, IPoolable<Knife>
     {
         //_cancellationTokenSource?.Cancel();
         ReturnToPool();
+    }
+
+    private void OnDestroy()
+    {
+        _cancellationTokenSource.Cancel();
+        _cancellationTokenSource.Dispose();
     }
 
     private void Update()
@@ -57,7 +63,7 @@ public class Knife : MonoBehaviour, IPoolable<Knife>
             healthController.TakeDamage(1);
         }
 
-        StopMove();
+        ReturnToPool();
     }
 
     public void SetDirection(Vector3 direction)
@@ -74,14 +80,16 @@ public class Knife : MonoBehaviour, IPoolable<Knife>
     public void StartMove()
     {
         enabled = true;
-        //_cancellationToken = _cancellationTokenSource.Token;
-        // DisableByDelayAsync();
+        CancellationToken cancellationToken = _cancellationTokenSource.Token;
+        DisableByDelayAsync(cancellationToken);
     }
 
     public void ReturnToPool()
     {
         StopMove();
         _returnToPool?.Invoke(this);
+        // TODO: temporary solution
+        Destroy(gameObject);
     }
 
     void IPoolable<Knife>.Initialize(Action<Knife> callback)
