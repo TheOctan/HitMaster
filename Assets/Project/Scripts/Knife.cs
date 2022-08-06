@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
 
+[SelectionBase]
 [RequireComponent(typeof(Rigidbody))]
 public class Knife : MonoBehaviour, IPoolable<Knife>
 {
@@ -10,25 +11,25 @@ public class Knife : MonoBehaviour, IPoolable<Knife>
     [SerializeField, Min(0.1f)] private float _rotationSpeed = 2f;
     [SerializeField, Min(0.1f)] private float _disableDelay = 2f;
 
-    private Rigidbody _rigidbody;
     private Action<Knife> _returnToPool;
+    private Rigidbody _rigidbody;
     private Vector3 _direction;
 
-    // private readonly CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
-    // private CancellationToken _cancellationToken;
+    private readonly CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
 
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody>();
     }
 
-    private async void DisableByDelayAsync()
+    private async void DisableByDelayAsync(CancellationToken token)
     {
         await Task.Delay((int)(1000 * _disableDelay));
-        // if (_cancellationToken.IsCancellationRequested)
-        // {
-        //     return;
-        // }
+        if (token.IsCancellationRequested)
+        {
+            Debug.Log($"Task {nameof(DisableByDelayAsync)} was canceled");
+            return;
+        }
         ReturnToPool();
     }
 
@@ -38,11 +39,18 @@ public class Knife : MonoBehaviour, IPoolable<Knife>
         ReturnToPool();
     }
 
+    private void OnDestroy()
+    {
+        _cancellationTokenSource.Cancel();
+        _cancellationTokenSource.Dispose();
+    }
+
     private void Update()
     {
         UpdateMovement();
         UpdateRotation();
     }
+
 
     private void OnTriggerEnter(Collider other)
     {
@@ -55,7 +63,7 @@ public class Knife : MonoBehaviour, IPoolable<Knife>
             healthController.TakeDamage(1);
         }
 
-        StopMove();
+        ReturnToPool();
     }
 
     public void SetDirection(Vector3 direction)
@@ -72,14 +80,16 @@ public class Knife : MonoBehaviour, IPoolable<Knife>
     public void StartMove()
     {
         enabled = true;
-        //_cancellationToken = _cancellationTokenSource.Token;
-        DisableByDelayAsync();
+        CancellationToken cancellationToken = _cancellationTokenSource.Token;
+        DisableByDelayAsync(cancellationToken);
     }
 
     public void ReturnToPool()
     {
         StopMove();
         _returnToPool?.Invoke(this);
+        // TODO: temporary solution
+        Destroy(gameObject);
     }
 
     void IPoolable<Knife>.Initialize(Action<Knife> callback)
@@ -97,6 +107,11 @@ public class Knife : MonoBehaviour, IPoolable<Knife>
 
     private void UpdateRotation()
     {
+        if (_direction == Vector3.zero)
+        {
+            return;
+        }
+
         Quaternion targetRotation = Quaternion.LookRotation(_direction);
         float turnStep = _rotationSpeed * Time.deltaTime;
 

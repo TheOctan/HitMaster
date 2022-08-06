@@ -1,21 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+
+public struct Line
+{
+    public Vector3 startPoint;
+    public Vector3 endPoint;
+    public Line(Vector3 startPoint, Vector3 endPoint)
+    {
+        this.startPoint = startPoint;
+        this.endPoint = endPoint;
+    }
+}
 
 [SelectionBase]
 public class PlayerController : MonoBehaviour, IPlayer
 {
     [SerializeField] private Camera _camera;
-    [SerializeField] private Transform _knifeHolder;
 
     [Header("Properties")]
-    [SerializeField] private float _focusDistance = 3f;
+    [SerializeField] private float _raycastDistance = 3f;
+    [SerializeField] private LayerMask _layerMask;
 
-    private IDropper _dropper;
+    private readonly List<Line> _debugLines = new List<Line>();
     private InputMaster _inputMaster;
-
-    private readonly List<Vector3> _points = new List<Vector3>();
+    private IDropper _dropper;
 
     private void Awake()
     {
@@ -41,27 +50,18 @@ public class PlayerController : MonoBehaviour, IPlayer
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.red;
-        foreach (Vector3 point in _points)
+        foreach (Line line in _debugLines)
         {
-            Vector3 startPosition = _camera.transform.position;
-
-            Gizmos.DrawSphere(point, 0.1f);
-            Gizmos.DrawRay(startPosition, (point - startPosition));
+            Debug.DrawLine(line.startPoint, line.endPoint, Color.red);
         }
     }
 
-    private void OnDrawGizmosSelected()
+    private void OnDrawGizmosSelected() 
     {
         Gizmos.color = Color.red;
-        Vector3 startCameraPosition = _camera.transform.position;
-        Vector3 direction = transform.forward * _focusDistance;
-        Gizmos.DrawRay(startCameraPosition, direction);
-        
-        Gizmos.color = Color.green;
-        Vector3 endPoint = startCameraPosition + direction;
-        Vector3 startKnifePosition = _knifeHolder.position;
-        Gizmos.DrawRay(startKnifePosition, endPoint - startKnifePosition);
+        Vector3 position = _camera.transform.position;
+        Vector3 direction = transform.forward;
+        Gizmos.DrawRay(position, direction * _raycastDistance);
     }
 
     private void OnTouchPressed(InputAction.CallbackContext context)
@@ -75,15 +75,17 @@ public class PlayerController : MonoBehaviour, IPlayer
         RaycastTo(touchPosition);
     }
 
-    private void RaycastTo(Vector2 point)
+    private void RaycastTo(Vector3 point)
     {
-        Vector3 worldPoint = _camera.ScreenToWorldPoint(new Vector3(point.x, point.y, 10));
-        _points.Add(worldPoint);
-        //_dropper?.DropItemToDirection(ray);
-    }
+        Ray ray = _camera.ScreenPointToRay(point);
 
-    private Ray CalculateDropDirection(Vector3 point)
-    {
-        return _camera.ScreenPointToRay(point);
+        Vector3 raycastPoint = 
+            Physics.Raycast(ray, out RaycastHit hit, _raycastDistance, _layerMask)
+                ? hit.point
+                : ray.origin + ray.direction * _raycastDistance;
+
+        Vector3 position = _camera.transform.position;
+        _debugLines.Add(new Line(position, raycastPoint));
+        _dropper?.DropItemTo(raycastPoint);
     }
 }

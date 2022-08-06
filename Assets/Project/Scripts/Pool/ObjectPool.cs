@@ -39,9 +39,17 @@ public class ObjectPool<T> : IPool<T> where T : MonoBehaviour, IPoolable<T>
 
     public T Pull()
     {
-        T obj = Count > 0
-            ? _polledObjects.Dequeue()
-            : Object.Instantiate(_prefab);
+        T obj;
+
+        if (Count > 0)
+        {
+            obj = _polledObjects.Dequeue();
+        }
+        else
+        {
+            obj = Object.Instantiate(_prefab);
+            obj.name = $"{_prefab.name}_{_polledObjects.Count}";
+        }
 
         obj.gameObject.SetActive(true);
         obj.Initialize(Push);
@@ -49,6 +57,14 @@ public class ObjectPool<T> : IPool<T> where T : MonoBehaviour, IPoolable<T>
         _pullObject?.Invoke(obj);
 
         return obj;
+    }
+
+    public void Push(T obj)
+    {
+        _polledObjects.Enqueue(obj);
+
+        _pushObject?.Invoke(obj);
+        obj.gameObject.SetActive(false);
     }
 
     public T Pull(Vector3 position)
@@ -82,13 +98,5 @@ public class ObjectPool<T> : IPool<T> where T : MonoBehaviour, IPoolable<T>
     public GameObject PullGameObject(Vector3 position, Quaternion rotation)
     {
         return Pull(position, rotation).gameObject;
-    }
-
-    public void Push(T obj)
-    {
-        _polledObjects.Enqueue(obj);
-
-        _pushObject?.Invoke(obj);
-        obj.gameObject.SetActive(false);
     }
 }
