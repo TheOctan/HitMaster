@@ -1,12 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 [SelectionBase]
 public class PlayerController : MonoBehaviour, IPlayer
 {
+    public event Action OnDie;
+
     [SerializeField] private Camera _camera;
+    [SerializeField] private MovementController _movementController;
 
     [Header("Properties")]
     [SerializeField] private float _raycastDistance = 3f;
@@ -49,6 +51,13 @@ public class PlayerController : MonoBehaviour, IPlayer
         Vector3 position = _camera.transform.position;
         Vector3 direction = transform.forward;
         Gizmos.DrawRay(position, direction * _raycastDistance);
+    }
+
+    public void Kill()
+    {
+        _movementController.StopMovement();
+        OnDie?.Invoke();
+        enabled = false;
     }
 
     private void OnTouchPressed(InputAction.CallbackContext context)

@@ -132,6 +132,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _camera: {fileID: 891345782497702720}
+  _movementController: {fileID: 891345782980430926}
   _raycastDistance: 7.59
   _layerMask:
     serializedVersion: 2

@@ -6,10 +6,11 @@ public class EnemyController : MonoBehaviour
 {
     [SerializeField] private Animator _animator;
     [SerializeField] private NavMeshAgent _agent;
-    [SerializeField] private RagdollControl _ragdollControl;
+    [SerializeField] private RagdollController _ragdollController;
+    [SerializeField] private AttackController _attackController;
+
     [Header("Properties")]
     [SerializeField] private float _findTargetRate = 0.25f;
-    [SerializeField] private float _attackDistance = 0.5f;
 
     private EnemyStateMachine _stateMachine;
     private EnemyMovementContext _movementContext;
@@ -17,8 +18,8 @@ public class EnemyController : MonoBehaviour
 
     private void Awake()
     {
-        _movementContext = new EnemyMovementContext(transform, _agent, _attackDistance, _findTargetRate);
-        _animationContext = new EnemyAnimationContext(_animator, _ragdollControl);
+        _movementContext = new EnemyMovementContext(transform, _agent, _attackController.AttackDistance, _findTargetRate);
+        _animationContext = new EnemyAnimationContext(_animator, _ragdollController);
         _stateMachine = new EnemyStateMachine(_movementContext, _animationContext);
         _stateMachine.SwitchState(EnemyState.Idle);
 
@@ -38,6 +39,7 @@ public class EnemyController : MonoBehaviour
     private void OnDieHandler(Vector3 pushDirection)
     {
         _animationContext.PushDirection = pushDirection;
+        _attackController.enabled = false;
         _stateMachine.SwitchState(EnemyState.Die);
     }
 

@@ -57,13 +57,13 @@ public class Knife : MonoBehaviour, IPoolable<Knife>
         if (other.TryGetComponent(out IHeadCollisionHandler headCollisionHandler))
         {
             headCollisionHandler.HeadShot(_direction);
+            ReturnToPool();
         }
         else if (other.TryGetComponent(out IHealthController healthController))
         {
             healthController.TakeDamage(_direction,1);
+            ReturnToPool();
         }
-
-        ReturnToPool();
     }
 
     public void SetDirection(Vector3 direction)

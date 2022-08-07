@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class RagdollControl : MonoBehaviour
+public class RagdollController : MonoBehaviour
 {
     [SerializeField] private Animator _animator;
     [SerializeField] private Rigidbody[] _rigidbodies;
