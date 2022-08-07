@@ -5,7 +5,9 @@ using UnityEngine.InputSystem;
 [SelectionBase]
 public class PlayerController : MonoBehaviour, IPlayer
 {
+    public event Action OnFinished;
     public event Action OnDie;
+    public event Action OnShoot;
 
     [SerializeField] private Camera _camera;
     [SerializeField] private MovementController _movementController;
@@ -45,6 +47,15 @@ public class PlayerController : MonoBehaviour, IPlayer
         Debug.DrawLine(_debugLine.startPoint, _debugLine.endPoint, Color.red);
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.TryGetComponent(out Finish _))
+        {
+            OnFinished?.Invoke();
+            enabled = false;
+        }
+    }
+
     private void OnDrawGizmosSelected() 
     {
         Gizmos.color = Color.red;
@@ -73,6 +84,7 @@ public class PlayerController : MonoBehaviour, IPlayer
 
     private void RaycastTo(Vector3 point)
     {
+        OnShoot?.Invoke();
         Ray ray = _camera.ScreenPointToRay(point);
 
         Vector3 raycastPoint = 
