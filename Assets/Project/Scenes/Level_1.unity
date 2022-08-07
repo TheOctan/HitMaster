@@ -276,9 +276,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _platformGroupManager: {fileID: 945262072}
+  _finishController: {fileID: 7099012979717099632}
   _tutorialManager: {fileID: 127289016}
   _progressBarView: {fileID: 1667479419}
+  _winScreenView: {fileID: 1182927173}
   _gameOverScreenView: {fileID: 1334400700140266166}
+  _nextLevelIndex: 0
 --- !u!114 &127289016
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1377,6 +1380,18 @@ MonoBehaviour:
   flattenMode: 0
   flattenSpace: 0
   destroyAfterFlatten: 1
+--- !u!114 &1182927173 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6869972720579491660, guid: f1a0f1c5572e8e547a0872bebf2a0359,
+    type: 3}
+  m_PrefabInstance: {fileID: 876601410177835147}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9823ba416f074298885d4e4b8054b568, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1454436899
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2597,6 +2612,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 622eb56e226d28f40a86e40924705b18, type: 3}
+--- !u!114 &7099012979717099632 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3488442717762456252, guid: 622eb56e226d28f40a86e40924705b18,
+    type: 3}
+  m_PrefabInstance: {fileID: 7099012979717099631}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85ba97cd06424947ba5a2ca8e77755cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &7327140187147136611 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2905301626083210560, guid: 1e0567eb150bd2640b433ab0a2b42d47,

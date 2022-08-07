@@ -6,9 +6,14 @@ using UnityEngine.SceneManagement;
 public class LevelManager : MonoBehaviour
 {
     [SerializeField] private PlatformGroupManager _platformGroupManager;
+    [SerializeField] private FinishController _finishController;
     [SerializeField] private TutorialManager _tutorialManager;
     [SerializeField] private ProgressBarView _progressBarView;
+    [SerializeField] private WinScreenView _winScreenView;
     [SerializeField] private GameOverScreenView _gameOverScreenView;
+
+    [Header("Properties")]
+    [SerializeField] private int _nextLevelIndex;
 
     private Transform _target;
     private List<Transform> _enemies;
@@ -22,8 +27,15 @@ public class LevelManager : MonoBehaviour
         InitEnemies();
         InitProgressBar();
 
+        _finishController.OnPlayerFinished += OnPlayerFinishedHandler;
+        _winScreenView.OnNextLevelButtonClicked += OnNextLevelButtonClickedHandler;
         _gameOverScreenView.OnRestartButtonClicked += OnRestartButtonClickedHandler;
 
+        CalculateNearestEnemy();
+    }
+
+    private void CalculateNearestEnemy()
+    {
         float distance = _enemies.Min(e => (e.position - _target.position).sqrMagnitude);
         _nearestEnemy = _enemies.First(e => (e.position - _target.position).sqrMagnitude <= distance)
             .GetComponent<IEnemy>();
@@ -77,6 +89,16 @@ public class LevelManager : MonoBehaviour
     {
         _killedEnemiesCount++;
         _progressBarView.SetValue(_killedEnemiesCount);
+    }
+
+    private void OnPlayerFinishedHandler()
+    {
+        _winScreenView.gameObject.SetActive(true);
+    }
+
+    private void OnNextLevelButtonClickedHandler()
+    {
+        SceneManager.LoadScene(_nextLevelIndex);
     }
 
     private static void OnRestartButtonClickedHandler()
