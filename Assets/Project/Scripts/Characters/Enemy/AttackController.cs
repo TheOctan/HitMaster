@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class AttackController : MonoBehaviour
 {
+    [SerializeField] private Collider _collider;
     [SerializeField] private float _attackDistance = 1f;
 
     public float AttackDistance => _attackDistance;
@@ -13,5 +14,10 @@ public class AttackController : MonoBehaviour
         {
             player.Kill();
         }
+    }
+
+    private void OnDisable()
+    {
+        _collider.enabled = false;
     }
 }
