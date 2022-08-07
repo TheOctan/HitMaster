@@ -6,12 +6,15 @@ using UnityEngine.SceneManagement;
 public class LevelManager : MonoBehaviour
 {
     [SerializeField] private PlatformGroupManager _platformGroupManager;
+    [SerializeField] private TutorialManager _tutorialManager;
     [SerializeField] private ProgressBarView _progressBarView;
     [SerializeField] private GameOverScreenView _gameOverScreenView;
 
     private Transform _target;
     private List<Transform> _enemies;
     private int _killedEnemiesCount;
+
+    private IEnemy _nearestEnemy;
 
     private void Start()
     {
@@ -20,13 +23,25 @@ public class LevelManager : MonoBehaviour
         InitProgressBar();
 
         _gameOverScreenView.OnRestartButtonClicked += OnRestartButtonClickedHandler;
+
+        float distance = _enemies.Min(e => (e.position - _target.position).sqrMagnitude);
+        _nearestEnemy = _enemies.First(e => (e.position - _target.position).sqrMagnitude <= distance)
+            .GetComponent<IEnemy>();
     }
 
-    private void InitProgressBar()
+    private void Update()
     {
-        int enemiesCount = _enemies.Count;
-        _progressBarView.MaximumValue = enemiesCount;
-        _progressBarView.SetValue(0);
+        _tutorialManager.SetTargetPosition(_nearestEnemy.HeadPosition);
+    }
+
+    private void InitPlayerTarget()
+    {
+        _target = _platformGroupManager.Target;
+        if (_target.TryGetComponent(out IPlayer player))
+        {
+            player.OnDie += OnPlayerDieHandler;
+            player.OnShoot += OnPlayerShootHandler;
+        }
     }
 
     private void InitEnemies()
@@ -41,18 +56,21 @@ public class LevelManager : MonoBehaviour
         }
     }
 
-    private void InitPlayerTarget()
+    private void InitProgressBar()
     {
-        _target = _platformGroupManager.Target;
-        if (_target.TryGetComponent(out IPlayer player))
-        {
-            player.OnDie += OnPlayerDieHandler;
-        }
+        int enemiesCount = _enemies.Count;
+        _progressBarView.MaximumValue = enemiesCount;
+        _progressBarView.SetValue(0);
     }
 
     private void OnPlayerDieHandler()
     {
         _gameOverScreenView.gameObject.SetActive(true);
+    }
+
+    private void OnPlayerShootHandler()
+    {
+        _tutorialManager.Stop();
     }
 
     private void OnEnemyDieHandler()

@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour, IPlayer
 {
     public event Action OnDie;
+    public event Action OnShoot;
 
     [SerializeField] private Camera _camera;
     [SerializeField] private MovementController _movementController;
@@ -73,6 +74,7 @@ public class PlayerController : MonoBehaviour, IPlayer
 
     private void RaycastTo(Vector3 point)
     {
+        OnShoot?.Invoke();
         Ray ray = _camera.ScreenPointToRay(point);
 
         Vector3 raycastPoint = 

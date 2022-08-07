@@ -7,11 +7,11 @@ public class EnemyController : MonoBehaviour, IEnemy
 {
     public event Action OnDie;
 
+    [SerializeField] private Transform _head;
     [SerializeField] private Animator _animator;
     [SerializeField] private NavMeshAgent _agent;
     [SerializeField] private RagdollController _ragdollController;
     [SerializeField] private AttackController _attackController;
-
     [Header("Properties")]
     [SerializeField] private float _findTargetRate = 0.25f;
 
@@ -19,6 +19,7 @@ public class EnemyController : MonoBehaviour, IEnemy
     private EnemyMovementContext _movementContext;
     private EnemyAnimationContext _animationContext;
 
+    public Vector3 HeadPosition => _head.position;
 
     private void Awake()
     {
