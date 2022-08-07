@@ -266,6 +266,7 @@ GameObject:
   - component: {fileID: 5403070461951957736}
   - component: {fileID: 5403070461951957738}
   - component: {fileID: 5403070461951957739}
+  - component: {fileID: 193202739510085430}
   m_Layer: 5
   m_Name: ScreenFail
   m_TagString: Untagged
@@ -332,6 +333,19 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &193202739510085430
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5403070461951957737}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 539ddcf2d0894c8f888dec81a66be97f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _restartButton: {fileID: 5403070460713704829}
 --- !u!1 &5403070462040732793
 GameObject:
   m_ObjectHideFlags: 0
@@ -397,7 +411,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Fail
+  m_text: Game Over
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -424,7 +438,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 218.35
+  m_fontSize: 142.25
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
