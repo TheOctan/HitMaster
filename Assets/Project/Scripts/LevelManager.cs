@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LevelManager : MonoBehaviour
 {
@@ -60,8 +61,8 @@ public class LevelManager : MonoBehaviour
         _progressBarView.SetValue(_killedEnemiesCount);
     }
 
-    private void OnRestartButtonClickedHandler()
+    private static void OnRestartButtonClickedHandler()
     {
-        
+        SceneManager.LoadScene(0);
     }
 }
