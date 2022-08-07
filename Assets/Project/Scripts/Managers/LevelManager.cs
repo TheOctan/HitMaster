@@ -2,11 +2,11 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 
 public class LevelManager : MonoBehaviour
 {
     [SerializeField] private PlatformGroupManager _platformGroupManager;
-    [SerializeField] private FinishController _finishController;
     [SerializeField] private TutorialManager _tutorialManager;
     [SerializeField] private ProgressBarView _progressBarView;
     [SerializeField] private WinScreenView _winScreenView;
@@ -27,7 +27,6 @@ public class LevelManager : MonoBehaviour
         InitEnemies();
         InitProgressBar();
 
-        _finishController.OnPlayerFinished += OnPlayerFinishedHandler;
         _winScreenView.OnNextLevelButtonClicked += OnNextLevelButtonClickedHandler;
         _gameOverScreenView.OnRestartButtonClicked += OnRestartButtonClickedHandler;
 
@@ -51,6 +50,7 @@ public class LevelManager : MonoBehaviour
         _target = _platformGroupManager.Target;
         if (_target.TryGetComponent(out IPlayer player))
         {
+            player.OnFinished += OnPlayerFinishedHandler;
             player.OnDie += OnPlayerDieHandler;
             player.OnShoot += OnPlayerShootHandler;
         }

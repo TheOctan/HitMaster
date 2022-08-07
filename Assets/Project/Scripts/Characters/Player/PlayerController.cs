@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 [SelectionBase]
 public class PlayerController : MonoBehaviour, IPlayer
 {
+    public event Action OnFinished;
     public event Action OnDie;
     public event Action OnShoot;
 
@@ -44,6 +45,15 @@ public class PlayerController : MonoBehaviour, IPlayer
     private void Update()
     {
         Debug.DrawLine(_debugLine.startPoint, _debugLine.endPoint, Color.red);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.TryGetComponent(out Finish _))
+        {
+            OnFinished?.Invoke();
+            enabled = false;
+        }
     }
 
     private void OnDrawGizmosSelected() 
