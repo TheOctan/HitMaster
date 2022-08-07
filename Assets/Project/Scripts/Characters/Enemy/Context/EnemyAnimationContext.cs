@@ -9,7 +9,7 @@ public class EnemyAnimationContext
     private const string ATTACK_ANIMATION_NAME = "KickAttack";
 
     private readonly Animator _animator;
-    private readonly RagdollControl _ragdollControl;
+    private readonly RagdollController _ragdollController;
 
     private readonly int _isFollowHash;
     private readonly int _isAttackHash;
@@ -40,10 +40,10 @@ public class EnemyAnimationContext
         set => _animator.SetFloat(_walkingSpeedHash, value);
     }
 
-    public EnemyAnimationContext(Animator animator, RagdollControl ragdollControl)
+    public EnemyAnimationContext(Animator animator, RagdollController ragdollController)
     {
         _animator = animator;
-        _ragdollControl = ragdollControl;
+        _ragdollController = ragdollController;
 
         _isFollowHash = Animator.StringToHash(IS_FOLLOW_ANIMATION_KEY);
         _isAttackHash = Animator.StringToHash(IS_ATTACK_ANIMATION_KEY);
@@ -57,11 +57,11 @@ public class EnemyAnimationContext
 
     public void SwitchToRagdoll()
     {
-        _ragdollControl.SwitchToPhysical();
+        _ragdollController.SwitchToPhysical();
     }
 
     public void PushToBody()
     {
-        _ragdollControl.PushToBody(PushDirection);
+        _ragdollController.PushToBody(PushDirection);
     }
 }

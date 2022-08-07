@@ -2,7 +2,7 @@
 using UnityEngine.AI;
 
 [RequireComponent(typeof(NavMeshAgent))]
-public class MovmentController : MonoBehaviour
+public class MovementController : MonoBehaviour
 {
     [SerializeField] private Transform _target;
 
@@ -19,5 +19,15 @@ public class MovmentController : MonoBehaviour
         {
             _agent.SetDestination(_target.position);
         }
+    }
+
+    public void StartMovement()
+    {
+        _agent.enabled = true;
+    }
+
+    public void StopMovement()
+    {
+        _agent.enabled = false;
     }
 }
