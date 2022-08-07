@@ -1,9 +1,12 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.AI;
 
 [SelectionBase]
-public class EnemyController : MonoBehaviour
+public class EnemyController : MonoBehaviour, IEnemy
 {
+    public event Action OnDie;
+
     [SerializeField] private Animator _animator;
     [SerializeField] private NavMeshAgent _agent;
     [SerializeField] private RagdollController _ragdollController;
@@ -15,6 +18,7 @@ public class EnemyController : MonoBehaviour
     private EnemyStateMachine _stateMachine;
     private EnemyMovementContext _movementContext;
     private EnemyAnimationContext _animationContext;
+
 
     private void Awake()
     {
@@ -38,6 +42,7 @@ public class EnemyController : MonoBehaviour
 
     private void OnDieHandler(Vector3 pushDirection)
     {
+        OnDie?.Invoke();
         _animationContext.PushDirection = pushDirection;
         _attackController.enabled = false;
         _stateMachine.SwitchState(EnemyState.Die);
