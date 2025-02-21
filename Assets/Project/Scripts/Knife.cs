@@ -24,7 +24,7 @@ public class Knife : MonoBehaviour, IPoolable<Knife>
 
     private async void DisableByDelayAsync(CancellationToken token)
     {
-        await Task.Delay((int)(1000 * _disableDelay));
+        await Task.Delay((int)(1000 * _disableDelay), token);
         if (token.IsCancellationRequested)
         {
             Debug.Log($"Task {nameof(DisableByDelayAsync)} was canceled");
